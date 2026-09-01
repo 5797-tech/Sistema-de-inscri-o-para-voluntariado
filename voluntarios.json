@@ -1,0 +1,18 @@
+[
+    {
+        "idVoluntario": "V-0002",
+        "nome": "João Pereira",
+        "email": "joao@email.com",
+        "telefone": "911111111",
+        "dataRegisto": "2026-08-25",
+        "ativo": true
+    },
+    {
+        "idVoluntario": "V-0003",
+        "nome": "Marta Costa",
+        "email": "marta@email.com",
+        "telefone": "914567890",
+        "dataRegisto": "2026-08-25",
+        "ativo": true
+    }
+]
