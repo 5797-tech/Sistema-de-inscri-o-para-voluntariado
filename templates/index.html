@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero">
+
+    <span class="eyebrow">VOLUNTARIADO 360</span>
+
+    <h1>Faça a diferença na sua comunidade</h1>
+
+    <p>
+        Participe nas atividades de voluntariado,
+        consulte as sessões disponíveis e acompanhe
+        as suas inscrições.
+    </p>
+
+    {% if session.get('uid') %}
+
+    <a href="{{ url_for('sessoes') }}" class="button">
+        Ver sessões disponíveis
+    </a>
+
+    {% else %}
+
+    <a href="{{ url_for('login') }}" class="button">
+        Iniciar sessão
+    </a>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

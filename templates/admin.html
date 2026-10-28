@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block content %}<div class="heading"><span class="eyebrow">ÁREA RESERVADA</span><h1>Gestão simples</h1><p>Operações essenciais da associação, sem painel complexo.</p></div>
+<div class="two-col"><section class="panel"><h2>Registar voluntário</h2><form method="post" action="{{ url_for('novo_voluntario') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Nome<input name="nome" required></label><label>Email<input name="email" type="email" required></label><label>Telefone<input name="telefone"></label>
+<label>Palavra-passe temporária<input name="password" type="password" minlength="8" required></label>
+<label class="check"><input type="checkbox" name="verificado" value="sim" required> Identidade verificada presencialmente</label>
+<button class="button full">Guardar voluntário</button></form></section>
+<section class="panel"><h2>Criar sessão</h2><form method="post" action="{{ url_for('nova_sessao') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Atividade<input name="titulo" required></label><label>Data<input name="data" type="date" required></label>
+<div class="two-col"><label>Início<input name="inicio" type="time" value="17:00" required></label><label>Fim<input name="fim" type="time" value="21:30" required></label></div>
+<label>Vagas<input name="vagas" type="number" min="1" value="8" required></label>
+<button class="button full">Criar sessão</button></form></section></div>
+<section class="panel"><h2>Sessões</h2><div class="table-wrap"><table><tr><th>Atividade</th><th>Data</th><th>Estado</th><th>Ação</th></tr>
+{% for s in sessoes %}<tr><td>{{ s.titulo }}</td><td>{{ s.data_sessao }}</td><td>{{ s.estado }}</td><td>{% if s.estado=='ativa' %}<form method="post" action="{{ url_for('cancelar_sessao',sessao_id=s.id) }}" onsubmit="return confirm('Cancelar esta sessão?')"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="textbtn">Cancelar</button></form>{% endif %}</td></tr>{% endfor %}</table></div></section>
+<section class="panel"><h2>Presenças</h2><div class="table-wrap"><table><tr><th>Voluntário</th><th>Sessão</th><th>Data</th><th>Presença</th></tr>
+{% for a in attendance %}<tr><td>{{ a.nome }}</td><td>{{ a.titulo }}</td><td>{{ a.data_sessao }}</td><td><form method="post" action="{{ url_for('registar_presenca',inscricao_id=a.inscricao_id) }}" class="inline"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><select name="presente" required><option value="">Escolher</option><option value="1" {% if a.presente == 1 %}selected{% endif %}>Presente</option><option value="0" {% if a.presente == 0 %}selected{% endif %}>Falta</option></select><button class="textbtn">Guardar</button></form></td></tr>{% endfor %}</table></div></section>{% endblock %}

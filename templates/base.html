@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Voluntariado 360</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Menu principal -->
+    <header class="topbar">
+
+        <a class="brand" href="{{ url_for('index') }}">
+            ✳ Voluntariado <span>360</span>
+        </a>
+
+        <nav>
+            <a href="{{ url_for('index') }}">Início</a>
+
+            {% if session.get('uid') %}
+
+            <a href="{{ url_for('sessoes') }}">Sessões</a>
+            <a href="{{ url_for('minhas_inscricoes') }}">Inscrições</a>
+
+            {% if session.get('perfil') == 'admin' %}
+            <a href="{{ url_for('admin') }}">Gestão</a>
+            {% endif %}
+
+            <form method="post" action="{{ url_for('logout') }}" class="inline">
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <button type="submit" class="navbtn">
+                    Sair
+                </button>
+            </form>
+
+            {% else %}
+
+            <a href="{{ url_for('login') }}">Entrar</a>
+
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Conteúdo das outras páginas -->
+    <main class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        Voluntariado 360 · Projeto UFCD 10790
+    </footer>
+
+</body>
+
+</html>

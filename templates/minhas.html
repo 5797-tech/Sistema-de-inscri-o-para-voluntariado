@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="heading">
+    <span class="eyebrow">A SUA PARTICIPAÇÃO</span>
+    <h1>As minhas inscrições</h1>
+    <p>Consulte e gira as suas atividades.</p>
+</div>
+
+<div class="stack">
+
+    {% for i in inscricoes %}
+
+    <article class="session-card">
+
+        <div class="datebox">
+            {{ i.data_sessao[8:10] }}/{{ i.data_sessao[5:7] }}
+        </div>
+
+        <div class="session-info">
+            <h2>{{ i.titulo }}</h2>
+            <p>
+                {{ i.hora_inicio[:5] }} · {{ i.estado|capitalize }}
+            </p>
+        </div>
+
+        {% if i.estado == 'ativa' and i.data_sessao >= today %}
+
+        <form method="post" action="{{ url_for('cancelar', inscricao_id=i.id) }}"
+            onsubmit="return confirm('Cancelar esta inscrição?')">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <button type="submit" class="button outline">
+                Cancelar
+            </button>
+
+        </form>
+
+        {% else %}
+
+        <span class="pill muted">
+            {{ i.estado|capitalize }}
+        </span>
+
+        {% endif %}
+
+    </article>
+
+    {% else %}
+
+    <div class="empty">
+        Ainda não tem inscrições.
+        <a href="{{ url_for('sessoes') }}">Ver sessões</a>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="form-card">
+    <h1>Bem-vindo de volta</h1>
+    <p>Entre com as suas credenciais.</p>
+
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <label>
+            Email
+            <input type="email" name="email" required placeholder="nome@exemplo.pt">
+        </label>
+
+        <label>
+            Palavra-passe
+            <input type="password" name="password" required>
+        </label>
+
+        <button class="button full" type="submit">Entrar</button>
+    </form>
+
+    <p>Esqueceu-se da palavra-passe? Contacte a associação.</p>
+    <small>
+        O registo de novos voluntários é efetuado pela associação
+        após verificação presencial.
+    </small>
+</section>
+
+{% endblock %}

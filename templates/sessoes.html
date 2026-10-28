@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="heading">
+    <span class="eyebrow">PARTICIPE</span>
+    <h1>Sessões disponíveis</h1>
+    <p>Escolha a sessão que melhor se adapta à sua disponibilidade.</p>
+</div>
+
+<div class="stack">
+
+    {% for s in sessoes %}
+
+    <article class="session-card">
+
+        <!-- Data da sessão -->
+        <div class="datebox">
+            {{ s.data_sessao[8:10] }}/{{ s.data_sessao[5:7] }}
+        </div>
+
+        <!-- Informação da sessão -->
+        <div class="session-info">
+            <h2>{{ s.titulo }}</h2>
+
+            <p>
+                {{ s.hora_inicio[:5] }} – {{ s.hora_fim[:5] }}
+                · {{ s.vagas - s.inscritos }} vagas disponíveis
+            </p>
+        </div>
+
+        <!-- Verificar se o utilizador pode inscrever-se -->
+        {% if session.get('perfil') == 'admin' %}
+
+        <span class="pill">Gestão</span>
+
+        {% elif s.minha_inscricao %}
+
+        <span class="pill">Já inscrito ✓</span>
+
+        {% elif s.inscritos >= s.vagas %}
+
+        <span class="pill muted">Sem vagas</span>
+
+        {% else %}
+
+        <form method="post" action="{{ url_for('inscrever', sessao_id=s.id) }}">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <button type="submit" class="button">
+                Inscrever-me
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </article>
+
+    {% else %}
+
+    <div class="empty">
+        Não existem sessões disponíveis neste momento.
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
